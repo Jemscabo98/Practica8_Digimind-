@@ -8,11 +8,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import montoya.eduardo.practica8_digimind.ui.Communicator
 import montoya.eduardo.practica8_digimind.ui.home.HomeFragment
-import montoya.eduardo.practica8_digimind.ui.Recordatorio as Recordatorio1
 
-class MainActivity : AppCompatActivity(), Communicator {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,18 +28,4 @@ class MainActivity : AppCompatActivity(), Communicator {
 
     }
 
-    override fun passData(nombre: String, dias: String, tiempo: String) {
-        val bundle = Bundle()
-        bundle.putString("nombre", nombre)
-        bundle.putString("dias", dias)
-        bundle.putString("tiempo", tiempo)
-
-        val transaction = this.supportFragmentManager.beginTransaction()
-        val homeFra = HomeFragment()
-        homeFra.arguments = bundle
-
-        transaction.addToBackStack(null)
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        transaction.commit()
-    }
 }

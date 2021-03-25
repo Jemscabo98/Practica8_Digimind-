@@ -18,17 +18,19 @@
 
     <GridView
         android:id="@+id/gridView"
-        android:layout_weight="7.2"
+        android:layout_weight="8.5"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:numColumns="3">
-
-
+        android:layout_height="0dp"
+        android:numColumns="3"
+        android:verticalSpacing="2dp"
+        android:horizontalSpacing="2dp"
+        android:scrollingCache="true"
+        android:smoothScrollbar="true">
     </GridView>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight=".8"/>
 
 </LinearLayout>
