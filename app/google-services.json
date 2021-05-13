@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "180085576785",
+    "project_id": "mydigimind-2c5e4",
+    "storage_bucket": "mydigimind-2c5e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:180085576785:android:2a7299aff5b554810b9470",
+        "android_client_info": {
+          "package_name": "montoya.eduardo.practica8_digimind"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "180085576785-nd30klq7pel3l35oa96gg3lf6lbvjltf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmFVvtMHvCvHryQeNzthjhvwX69BFhvrs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "180085576785-nd30klq7pel3l35oa96gg3lf6lbvjltf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
