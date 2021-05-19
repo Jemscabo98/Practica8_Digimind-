@@ -18,16 +18,16 @@ import montoya.eduardo.practica8_digimind.ui.Recordatorio
 import android.widget.BaseAdapter as BaseAdapter
 
 class HomeFragment : Fragment() {
-    private var adapter: Adapter? = null
+    private var adaptador: Adapter? = null
+    private lateinit var homeViewModel: HomeViewModel
+
     private  lateinit var storage: FirebaseFirestore
     private lateinit var usuario: FirebaseAuth
 
     companion object{
-        var rec = ArrayList<Recordatorio>()
+        var tasks = ArrayList<Recordatorio>()
         var first = true
     }
-
-    private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -37,16 +37,19 @@ class HomeFragment : Fragment() {
         homeViewModel =
                 ViewModelProvider(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        var gridNote : GridView = root.findViewById(R.id.gridView)
+        var gridView : GridView = root.findViewById(R.id.gridView)
 
-        rec = ArrayList()
+        tasks = ArrayList()
         storage = FirebaseFirestore.getInstance()
         usuario = FirebaseAuth.getInstance()
 
-        fillTasks()
-        if (!rec.isEmpty()){
-            adapter = Adapter(this.context, rec)
-            gridNote.adapter = adapter
+        fillTasks(gridView)
+
+        if (!tasks.isEmpty()){
+            adaptador = Adapter(root.context, tasks)
+            gridView.adapter = adaptador
+        }else{
+            Toast.makeText(context, "Esta vacio", Toast.LENGTH_LONG).show()
         }
 
 
@@ -64,7 +67,7 @@ class HomeFragment : Fragment() {
         return root
     }
 
-    fun fillTasks() {
+    fun fillTasks(gridView : GridView) {
         storage.collection("actividades")
             .whereEqualTo("email", usuario.currentUser?.email)
             .get()
@@ -92,8 +95,11 @@ class HomeFragment : Fragment() {
                     if (it.getBoolean("domingo") == true){
                         dias.add("Domingo")
                     }
-                    rec.add(Recordatorio(it.getString("accion"), dias, it.getString("tiempo")))
+                    tasks.add(Recordatorio(it.getString("accion"), dias, it.getString("tiempo")))
+                    Toast.makeText(context, it.getString("accion") + dias.toString() + it.getString("tiempo"), Toast.LENGTH_SHORT).show()
                 }
+                adaptador = Adapter(context, tasks)
+                gridView.adapter = adaptador
             }
 
             .addOnFailureListener{
