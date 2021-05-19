@@ -8,15 +8,19 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import montoya.eduardo.practica8_digimind.R
-import montoya.eduardo.practica8_digimind.ui.Recordatorio
-import montoya.eduardo.practica8_digimind.ui.home.HomeFragment
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
+
 class DashboardFragment : Fragment() {
     private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var storage: FirebaseFirestore
+    private lateinit var usuario: FirebaseAuth
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -27,6 +31,8 @@ class DashboardFragment : Fragment() {
                 ViewModelProvider(this).get(DashboardViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
+        storage = FirebaseFirestore.getInstance()
+        usuario = FirebaseAuth.getInstance()
 
         val firstAnswer: TextView = root.findViewById(R.id.firstAnswer)
         val btnSetTime: Button = root.findViewById(R.id.btnSetTime)
@@ -53,78 +59,30 @@ class DashboardFragment : Fragment() {
         }
 
         btnRegistro.setOnClickListener {
+
             val nombre = firstAnswer.text.toString()
             var aux: ArrayList<String> = ArrayList<String>()
-            var dias: String = ""
 
-            if(Checkbox1.isChecked)
-                aux.add("Monday")
+            val actividad = hashMapOf(
+                "accion" to nombre,
+                "email" to usuario.currentUser?.email.toString(),
+                "lunes" to Checkbox1.isChecked,
+                "martes" to Checkbox2.isChecked,
+                "miercoles" to Checkbox3.isChecked,
+                "jueves" to Checkbox4.isChecked,
+                "viernes" to Checkbox5.isChecked,
+                "sabado" to Checkbox6.isChecked,
+                "domingo" to Checkbox7.isChecked,
+                "tiempo" to btnSetTime.toString())
 
-            if(Checkbox2.isChecked)
-                aux.add("Tuesday")
-
-            if(Checkbox3.isChecked)
-                aux.add("Wednesday")
-
-            if(Checkbox4.isChecked)
-                aux.add("Thursday")
-
-            if(Checkbox5.isChecked)
-                aux.add("Friday")
-
-            if(Checkbox6.isChecked)
-                aux.add("Saturday")
-
-            if(Checkbox7.isChecked)
-                aux.add("Sunday")
-
-            if (aux.size == 7)
-                dias = "Everyday"
-
-            else if (aux.size == 2) {
-                if (aux.contains("Saturday") && aux.contains("Sunday"))
-                    dias = "Weekend"
-
-                else{
-                    for (i in aux.indices){
-                        dias += aux[i]
-                        if (i < aux.size-1)
-                            dias += ", "
+            storage.collection("actividades")
+                    .add(actividad)
+                    .addOnSuccessListener {
+                        Toast.makeText(context, "Task Added", Toast.LENGTH_LONG).show()
                     }
-                }
-            }
-
-            else if (aux.size == 5) {
-                if (aux.contains("Monday") &&
-                        aux.contains("Tuesday") &&
-                        aux.contains("Wednesday")&&
-                        aux.contains("Thursday")&&
-                        aux.contains("Friday"))
-                    dias = "Week"
-
-                else {
-                    for (i in aux.indices) {
-                        dias += aux[i]
-                        if (i < aux.size - 1)
-                            dias += ", "
+                    .addOnFailureListener{
+                        Toast.makeText(context, "Task Failed", Toast.LENGTH_LONG).show()
                     }
-                }
-            }
-
-            else{
-                for (i in aux.indices){
-                    dias += aux[i]
-                    if (i < aux.size-1)
-                        dias += ", "
-                }
-            }
-
-            val rec: Recordatorio = Recordatorio(nombre,dias,tiempo)
-
-            HomeFragment.rec.add(rec)
-
-            Toast.makeText(context, "New task added", Toast.LENGTH_SHORT).show()
-
         }
         return root
     }
