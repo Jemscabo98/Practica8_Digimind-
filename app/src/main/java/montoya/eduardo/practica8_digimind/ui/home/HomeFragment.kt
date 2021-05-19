@@ -96,7 +96,7 @@ class HomeFragment : Fragment() {
                         dias.add("Domingo")
                     }
                     tasks.add(Recordatorio(it.getString("accion"), dias, it.getString("tiempo")))
-                    Toast.makeText(context, it.getString("accion") + dias.toString() + it.getString("tiempo"), Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(context, it.getString("accion") + dias.toString() + it.getString("tiempo"), Toast.LENGTH_SHORT).show()
                 }
                 adaptador = Adapter(context, tasks)
                 gridView.adapter = adaptador

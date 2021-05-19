@@ -73,7 +73,7 @@ class DashboardFragment : Fragment() {
                 "viernes" to Checkbox5.isChecked,
                 "sabado" to Checkbox6.isChecked,
                 "domingo" to Checkbox7.isChecked,
-                "tiempo" to btnSetTime.toString())
+                "tiempo" to btnSetTime.text.toString())
 
             storage.collection("actividades")
                     .add(actividad)
